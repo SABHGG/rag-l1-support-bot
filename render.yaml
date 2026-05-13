@@ -15,4 +15,3 @@ services:
         value: "10000"
       - key: DEBUG
         value: "false"
-        sync: false
