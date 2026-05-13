@@ -46,7 +46,7 @@ cp .env.example .env
 ```bash
 # In Pinecone console or via API:
 pc = Pinecone(api_key="YOUR_KEY")
-assistant = pc.assistant.create_assistant(
+assistant = pc.assistants.create_assistant(
     assistant_name="rag-l1-support",
     instructions="Use the uploaded documents to answer technical support questions."
 )
@@ -147,6 +147,26 @@ pytest tests/ -v
 - **Framework**: FastAPI
 - **Sync**: watchdog
 - **LLM**: GPT-4o via Pinecone Assistant
+
+## Deployment
+
+### Render (Recommended for TRL5)
+
+1. Push to GitHub
+2. Create new Web Service at [render.com](https://render.com)
+3. Connect your GitHub repo
+4. Add environment variables:
+   - `PINECONE_API_KEY` = your Pinecone API key
+   - `PINECONE_ASSISTANT_NAME` = `rag-l1-support`
+5. Deploy — Render auto-detects `render.yaml`
+
+**Web UI**: `https://rag-l1-support-bot.onrender.com`
+
+### Local Development
+
+```bash
+python -m app.main
+```
 
 ## License
 

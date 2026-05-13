@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: rag-l1-support-bot
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PINECONE_API_KEY
+        sync: false
+      - key: PINECONE_ASSISTANT_NAME
+        value: rag-l1-support
+      - key: MANUALS_DIR
+        value: manuals
+      - key: PORT
+        value: "10000"
+      - key: DEBUG
+        value: "false"
+        sync: false
