@@ -1,0 +1,27 @@
+change: rag-l1-support-bot
+phase: verify
+artifact_store: hybrid
+artifacts:
+  proposal: true
+  specs: true
+  design: true
+  tasks: true
+  verify-report: true
+tasks_progress:
+  completed:
+    - 1.1 Create requirements.txt
+    - 1.2 Create app/__init__.py
+    - 1.3 Create sync/__init__.py
+    - 1.4 Create scripts/__init__.py
+    - 1.5 Create .env.example
+    - 2.1 Implement assistant_client.py
+    - 3.1 Implement app/main.py
+    - 3.2 Implement app/rag.py
+    - 4.1 Implement watcher.py
+    - 5.1 Implement ingest_manual.py
+    - 6.1 Create docs/FLOW.md
+    - 6.2 Create README.md
+    - 7.1 Create test_rag.py
+    - 7.2 Create test_watcher.py
+  pending: []
+last_updated: "2026-05-12T09:35:00Z"

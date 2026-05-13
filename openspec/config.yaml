@@ -1,0 +1,18 @@
+schema: spec-driven
+
+context: |
+  Tech stack: Python, FastAPI, Pinecone Assistant SDK, watchdog
+  Architecture: RAG core with auto-sync via file watcher
+  Testing: pytest
+  Style: clean architecture, async-first
+
+rules:
+  specs:
+    - Use Given/When/Then for scenarios
+  apply:
+    - Follow existing code patterns
+    tdd: false
+    test_command: "pytest"
+  verify:
+    test_command: "pytest"
+    coverage_threshold: 0
