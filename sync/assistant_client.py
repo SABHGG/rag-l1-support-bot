@@ -17,19 +17,25 @@ class AssistantClient:
             raise ValueError("PINECONE_ASSISTANT_NAME is required")
 
         self.pc = Pinecone(api_key=self.api_key)
-        self.assistant = self.pc.assistant.Assistant(assistant_name=self.assistant_name)
 
     def upload_file(self, file_path: str, metadata: Optional[dict] = None) -> dict:
-        return self.assistant.upload_file(
+        return self.pc.assistants.upload_file(
+            assistant_name=self.assistant_name,
             file_path=file_path,
             metadata=metadata or {},
-            timeout=None
         )
 
     def chat(self, message: str, model: str = "gpt-4o") -> dict:
-        messages = [{"role": "user", "content": message}]
-        return self.assistant.chat(messages=messages, model=model)
+        return self.pc.assistants.chat(
+            assistant_name=self.assistant_name,
+            messages=[{"role": "user", "content": message}],
+            model=model
+        )
 
     def chat_stream(self, message: str, model: str = "gpt-4o"):
-        messages = [{"role": "user", "content": message}]
-        return self.assistant.chat(messages=messages, model=model, stream=True)
+        return self.pc.assistants.chat(
+            assistant_name=self.assistant_name,
+            messages=[{"role": "user", "content": message}],
+            model=model,
+            stream=True
+        )

@@ -12,22 +12,53 @@ def mock_assistant_client():
         yield client
 
 
+@pytest.fixture
+def mock_chat_response():
+    """Mock ChatResponse-like object."""
+    response = MagicMock()
+    response.message = MagicMock()
+    response.message.content = "Test answer about password reset."
+    response.finish_reason = "stop"
+    response.usage = MagicMock()
+    response.usage.prompt_tokens = 100
+    response.usage.completion_tokens = 50
+    response.usage.total_tokens = 150
+    response.citations = []
+    return response
+
+
+@pytest.fixture
+def mock_chat_response_with_citations():
+    """Mock ChatResponse with citations."""
+    response = MagicMock()
+    response.message = MagicMock()
+    response.message.content = "According to the manual..."
+    response.finish_reason = "stop"
+    response.usage = MagicMock()
+    response.usage.prompt_tokens = 50
+    response.usage.completion_tokens = 25
+    response.usage.total_tokens = 75
+
+    file_model = MagicMock()
+    file_model.name = "test-manual.pdf"
+    file_model.metadata = {"category": "test"}
+
+    ref = MagicMock()
+    ref.file = file_model
+    ref.pages = [1, 2]
+
+    cit = MagicMock()
+    cit.references = [ref]
+
+    response.citations = [cit]
+    return response
+
+
 @pytest.mark.asyncio
-async def test_query_assistant_returns_proper_structure(mock_assistant_client):
+async def test_query_assistant_returns_proper_structure(mock_assistant_client, mock_chat_response):
     from app.rag import query_assistant
 
-    mock_assistant_client.chat.return_value = {
-        "message": {
-            "content": "Test answer about password reset."
-        },
-        "finish_reason": "stop",
-        "usage": {
-            "prompt_tokens": 100,
-            "completion_tokens": 50,
-            "total_tokens": 150
-        },
-        "citations": []
-    }
+    mock_assistant_client.chat.return_value = mock_chat_response
 
     result = await query_assistant("How do I reset password?")
 
@@ -40,29 +71,10 @@ async def test_query_assistant_returns_proper_structure(mock_assistant_client):
 
 
 @pytest.mark.asyncio
-async def test_query_assistant_extracts_citations(mock_assistant_client):
+async def test_query_assistant_extracts_citations(mock_assistant_client, mock_chat_response_with_citations):
     from app.rag import query_assistant
 
-    mock_assistant_client.chat.return_value = {
-        "message": {
-            "content": "According to the manual..."
-        },
-        "finish_reason": "stop",
-        "usage": {"prompt_tokens": 50, "completion_tokens": 25, "total_tokens": 75},
-        "citations": [
-            {
-                "references": [
-                    {
-                        "pages": [1, 2],
-                        "file": {
-                            "name": "test-manual.pdf",
-                            "metadata": {"category": "test"}
-                        }
-                    }
-                ]
-            }
-        ]
-    }
+    mock_assistant_client.chat.return_value = mock_chat_response_with_citations
 
     result = await query_assistant("Test question")
 
@@ -75,7 +87,7 @@ async def test_query_assistant_extracts_citations(mock_assistant_client):
 async def test_check_assistant_status_ready(mock_assistant_client):
     from app.rag import check_assistant_status
 
-    mock_assistant_client.chat.return_value = {"message": {"content": "ok"}}
+    mock_assistant_client.chat.return_value = MagicMock()
 
     status = await check_assistant_status()
 
