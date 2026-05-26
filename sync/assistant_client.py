@@ -33,12 +33,9 @@ class AssistantClient:
         )
 
     def chat_stream(self, message: str, model: str = "gpt-4o", thread_id: Optional[str] = None):
-        kwargs = {
-            "assistant_name": self.assistant_name,
-            "messages": [{"role": "user", "content": message}],
-            "model": model,
-            "stream": True,
-        }
-        if thread_id is not None:
-            kwargs["thread_id"] = thread_id
-        return self.pc.assistants.chat(**kwargs)
+        return self.pc.assistants.chat(
+            assistant_name=self.assistant_name,
+            messages=[{"role": "user", "content": message}],
+            model=model,
+            stream=True,
+        )
