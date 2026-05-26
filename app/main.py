@@ -64,7 +64,7 @@ async def health():
 @app.get("/")
 async def root(request: Request):
     """Web interface for chatting with the assistant."""
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request, "index.html")
 
 
 @app.post("/chat", response_model=ChatResponse)
