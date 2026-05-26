@@ -1,0 +1,165 @@
+/* =========================================================
+   app.css — CSS custom properties + component styles
+   Layout handled by Tailwind; this file adds polish only.
+   ========================================================= */
+
+:root {
+  --color-bg:          #030712;   /* gray-950 */
+  --color-surface:     #111827;   /* gray-900 */
+  --color-text:        #f3f4f6;   /* gray-100 */
+  --color-accent:      #6366f1;   /* indigo-500 */
+  --color-user-bubble: #3730a3;   /* indigo-800 */
+  --color-bot-bubble:  #1f2937;   /* gray-800 */
+  --font-mono:         ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* ── Scrollbar ── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #374151 transparent;
+}
+*::-webkit-scrollbar        { width: 6px; height: 6px; }
+*::-webkit-scrollbar-track  { background: transparent; }
+*::-webkit-scrollbar-thumb  { background: #374151; border-radius: 3px; }
+*::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+
+/* ── Textarea auto-grow helper ── */
+textarea { field-sizing: content; }
+
+/* ── Markdown output inside bot bubbles ── */
+.bot-content p          { margin-bottom: 0.75em; line-height: 1.65; }
+.bot-content p:last-child { margin-bottom: 0; }
+.bot-content ul,
+.bot-content ol         { padding-left: 1.25em; margin-bottom: 0.75em; }
+.bot-content li         { margin-bottom: 0.25em; }
+.bot-content h1,
+.bot-content h2,
+.bot-content h3         { font-weight: 600; margin-bottom: 0.5em; }
+.bot-content h1         { font-size: 1.15em; }
+.bot-content h2         { font-size: 1.05em; }
+.bot-content h3         { font-size: 0.95em; }
+.bot-content a          { color: #818cf8; text-decoration: underline; }
+.bot-content a:hover    { color: #a5b4fc; }
+.bot-content strong     { font-weight: 600; color: #e5e7eb; }
+.bot-content blockquote {
+  border-left: 3px solid #4b5563;
+  padding-left: 1em;
+  margin-left: 0;
+  color: #9ca3af;
+  font-style: italic;
+}
+.bot-content hr {
+  border: none;
+  border-top: 1px solid #374151;
+  margin: 1em 0;
+}
+
+/* ── Code blocks ── */
+.bot-content pre {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 1em;
+  overflow-x: auto;
+  margin-bottom: 0.75em;
+  position: relative;
+}
+.bot-content pre code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  color: #e6edf3;
+}
+.bot-content code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  padding: 0.1em 0.35em;
+  color: #e6edf3;
+}
+
+/* ── Citation chips ── */
+.citation-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  background: rgba(99, 102, 241, 0.15);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.3);
+  cursor: default;
+  transition: background 0.15s;
+  text-decoration: none;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.citation-chip:hover {
+  background: rgba(99, 102, 241, 0.25);
+}
+.citation-chip .chip-index {
+  font-size: 0.65rem;
+  opacity: 0.7;
+}
+
+/* ── Streaming cursor ── */
+.streaming-cursor::after {
+  content: '|';
+  display: inline-block;
+  margin-left: 2px;
+  color: var(--color-accent);
+  animation: blink-cursor 0.8s step-end infinite;
+}
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Copy button ── */
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  background: transparent;
+  color: #6b7280;
+  border: 1px solid #374151;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.copy-btn:hover {
+  color: #e5e7eb;
+  border-color: #6b7280;
+  background: #1f2937;
+}
+.copy-btn.copied {
+  color: #4ade80;
+  border-color: #166534;
+}
+
+/* ── Loading dots ── */
+@keyframes dot-pulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40%           { transform: scale(1);   opacity: 1;   }
+}
+.loading-dots span {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6b7280;
+  animation: dot-pulse 1.2s ease-in-out infinite;
+}
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
