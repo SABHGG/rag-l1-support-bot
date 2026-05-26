@@ -50,10 +50,17 @@ def _stream_generator(request: ChatStreamRequest) -> AsyncGenerator[str, None]:
                         continue
                     for ref in cit.references:
                         file_info = ref.file
+                        name = (
+                            file_info.name if hasattr(file_info, "name") else file_info.get("name", "unknown")
+                        )
+                        metadata = (
+                            file_info.metadata if hasattr(file_info, "metadata") else {}
+                        ) or {}
                         sources.append({
-                            "name": file_info.name if hasattr(file_info, "name") else file_info.get("name", "unknown"),
+                            "title": name,
+                            "id": metadata.get("id", ""),
+                            "url": metadata.get("url", metadata.get("source", "")),
                             "pages": ref.pages if ref.pages else [],
-                            "metadata": file_info.metadata if hasattr(file_info, "metadata") else {},
                         })
 
         yield _sse("sources", sources=sources)
